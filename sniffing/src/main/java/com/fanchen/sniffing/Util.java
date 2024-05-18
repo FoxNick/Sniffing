@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import com.fanchen.sniffing.node.Node;
 import com.tencent.smtt.sdk.WebView;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import javax.net.ssl.*;
 import java.net.HttpURLConnection;
@@ -19,7 +21,7 @@ public class Util {
         Object[] objects = new Object[2];
         HttpURLConnection urlConnection = null;
         try {
-            urlConnection = (HttpURLConnection) new URL(url).openConnection();
+            urlConnection = (HttpURLConnection) Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
             if (url.startsWith("https")) {
                 HttpsURLConnection https = (HttpsURLConnection) urlConnection;
                 // 方式一，相信所有
